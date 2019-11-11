@@ -45,6 +45,7 @@ object test extends Tokenizer {
     .map(line => {
       tokens = line.split(',')
       (tokens(5), tokens(6), tokens(8), tokens(9), tokens(10))
+    })
     .foreach(line => {
       println(line)
     })

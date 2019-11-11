@@ -36,7 +36,7 @@ object test extends Tokenizer {
 //     val outputDir = new Path(args.output())
 //     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
     
-    val textFile = sc.textFile("data2/index.csv")
+    val textFile = sc.textFile("data2/index.csv.gz")
     .take(5)
     .foreach(line => {
       println(line)

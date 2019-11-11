@@ -36,10 +36,10 @@ object test extends Tokenizer {
 //     val outputDir = new Path(args.output())
 //     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
     
-    SCENE_ID,PRODUCT_ID,SPACECRAFT_ID,SENSOR_ID,DATE_ACQUIRED,
-    COLLECTION_NUMBER,COLLECTION_CATEGORY,SENSING_TIME,DATA_TYPE,
-    WRS_PATH,WRS_ROW,CLOUD_COVER,NORTH_LAT,SOUTH_LAT,
-    WEST_LON,EAST_LON,TOTAL_SIZE,BASE_URL
+//     SCENE_ID,PRODUCT_ID,SPACECRAFT_ID,SENSOR_ID,DATE_ACQUIRED,
+//     COLLECTION_NUMBER,COLLECTION_CATEGORY,SENSING_TIME,DATA_TYPE,
+//     WRS_PATH,WRS_ROW,CLOUD_COVER,NORTH_LAT,SOUTH_LAT,
+//     WEST_LON,EAST_LON,TOTAL_SIZE,BASE_URL
     val textFile = sc.textFile("data2/index.csv.gz")
     .take(5)
     .map(line => {

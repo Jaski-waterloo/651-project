@@ -13,10 +13,10 @@ class ConfStripesPMI(args: Seq[String]) extends ScallopConf(args) with Tokenizer
   mainOptions = Seq(input, output, reducers)
   val input = opt[String](descr = "input path", required = true)
   val output = opt[String](descr = "output path", required = true)
-  val reducers = opt[Int](descr = "number of reducers", required = false, default = Some(1))
-  val numExecutors = opt[Int](descr = "number of executors", required = false, default = Some(1))
-  val executorCores = opt[Int](descr = "number of cores", required = false, default = Some(1))
-  val threshold = opt[Int](descr = "threshold", required = false, default = Some(10))
+//   val reducers = opt[Int](descr = "number of reducers", required = false, default = Some(1))
+//   val numExecutors = opt[Int](descr = "number of executors", required = false, default = Some(1))
+//   val executorCores = opt[Int](descr = "number of cores", required = false, default = Some(1))
+//   val threshold = opt[Int](descr = "threshold", required = false, default = Some(10))
   verify()
 }
 
@@ -28,7 +28,7 @@ object StripesPMI extends Tokenizer {
 
     log.info("Input: " + args.input())
     log.info("Output: " + args.output())
-    log.info("Number of reducers: " + args.reducers())
+//     log.info("Number of reducers: " + args.reducers())
 
     val conf = new SparkConf().setAppName("Compute Bigram Relative Frequency Stripes")
     val sc = new SparkContext(conf)
@@ -36,4 +36,13 @@ object StripesPMI extends Tokenizer {
 
     val outputDir = new Path(args.output())
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
+    
+    val textFile = sc.textFile(args.input(), args.reducers())
+    .take(5)
+    .foreach(line => {
+      println(line)
+    })
+  }
+}
+
 

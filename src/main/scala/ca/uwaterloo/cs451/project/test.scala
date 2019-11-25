@@ -44,7 +44,7 @@ object test extends Tokenizer {
     
     textFile
     .map(line => {
-      val tokens = line.split(',')
+      val tokens = tokenize(line)
       (tokens(1),1)
     })
     .reduceByKey(_+_)

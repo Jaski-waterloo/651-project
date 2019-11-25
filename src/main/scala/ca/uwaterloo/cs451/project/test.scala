@@ -78,7 +78,7 @@ object test extends Tokenizer {
     textFile
     .map(line => {
       val tokens = line.split(',')
-      ((tokens(8), tokens(11),1)
+      ((tokens(8), tokens(11)),1)
     })
     .reduceByKey(_+_)
     .saveAsTextFile("HowSubmitted.txt")

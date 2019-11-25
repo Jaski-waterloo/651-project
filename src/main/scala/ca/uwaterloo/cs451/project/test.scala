@@ -46,7 +46,7 @@ object test extends Tokenizer {
     .take(5)
     .map(line => {
       var tokens = tokenize(line)
-      (tokens,1)
+      (tokens._2,1)
     })
     .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts.txt")

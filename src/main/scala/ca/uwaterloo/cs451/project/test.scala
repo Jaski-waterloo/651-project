@@ -45,13 +45,16 @@ object test extends Tokenizer {
     textFile
     .map(line => {
       val tokens = line.split(',')
-      tokens.toList
+      tokens
     })
-    .map(line => {
-      (line(1), 1)
+    .foreach(line => {
+      println(line(1),1)
     })
-    .reduceByKey(_+_)
-    .saveAsTextFile("numberOfProducts.txt")
+//     .map(line => {
+//       (line(1), 1)
+//     })
+//     .reduceByKey(_+_)
+//     .saveAsTextFile("numberOfProducts.txt")
     
 //     textFile
 //     .map(line => {

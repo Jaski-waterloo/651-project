@@ -77,7 +77,7 @@ object test extends Tokenizer {
     
     textFile
     .map(line => {
-      (line(8), line(12))
+      ((line(8), line(12)),1)
     })
     .reduceByKey(_+_)
     .saveAsTextFile("HowSubmitted.txt")

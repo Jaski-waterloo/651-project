@@ -41,14 +41,14 @@ object test extends Tokenizer {
 //     WRS_PATH,WRS_ROW,CLOUD_COVER,NORTH_LAT,SOUTH_LAT,
 //     WEST_LON,EAST_LON,TOTAL_SIZE,BASE_URL
     val textFile = sc.textFile("customer_data.csv")
-    .map(line => {
+    .flatMap(line => {
       val tokens = line.split(',')
       tokens
     })
     
     textFile
     .map(line => {
-      (line(1), 1)
+      (line._2, 1)
     })
     .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts.txt")

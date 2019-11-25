@@ -44,7 +44,7 @@ object test extends Tokenizer {
     
     textFile
     .take(5)
-    .flatMap(line => {
+    .map(line => {
       val tokens = line.split(',')
       tokens
     })

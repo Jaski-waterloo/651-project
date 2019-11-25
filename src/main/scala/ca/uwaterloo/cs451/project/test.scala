@@ -40,11 +40,11 @@ object test extends Tokenizer {
 //     COLLECTION_NUMBER,COLLECTION_CATEGORY,SENSING_TIME,DATA_TYPE,
 //     WRS_PATH,WRS_ROW,CLOUD_COVER,NORTH_LAT,SOUTH_LAT,
 //     WEST_LON,EAST_LON,TOTAL_SIZE,BASE_URL
-    val textFile = sc.textFile("customer_data.csv")
+    var textFile = sc.textFile("customer_data.csv")
     
     textFile
     .map(line => {
-      val tokens = tokenize(line)
+      var tokens = tokenize(line)
       (tokens(1),1)
     })
     .reduceByKey(_+_)

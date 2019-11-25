@@ -41,14 +41,74 @@ object test extends Tokenizer {
 //     WRS_PATH,WRS_ROW,CLOUD_COVER,NORTH_LAT,SOUTH_LAT,
 //     WEST_LON,EAST_LON,TOTAL_SIZE,BASE_URL
     val textFile = sc.textFile("customer_data.csv")
-    .take(5)
     .map(line => {
       val tokens = line.split(',')
-      (tokens(5), tokens(6), tokens(8), tokens(9), tokens(10))
+      tokens
     })
-    .foreach(line => {
-      println(line)
+    
+    textFile
+    .map(line => {
+      (line._1, 1)
     })
+    .reduceByKey(_+_)
+    .saveAsTextFile("numberOfProducts.txt")
+    
+    textFile
+    .map(line => {
+      (line._1,line._7),1)
+    })
+    .reduceByKey(_+_)
+    .saveAsTextFile("productsOfCompanies.txt")
+    
+    textFile
+    .map(line => {
+      var yes = 0
+      var no = 0
+      var na = 0
+      if(line._16 == "Yes") yes = 1
+      else if(line._16 == "No") no = 1
+      else na = 1
+      (line._8, yes, no, na)
+    })
+    .reduceByKey((v1,v2) => {
+      (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
+    })
+    .saveAsTextFile("StatesConsumerDisputed.txt")
+    
+    textFile
+    .map(line => {
+      (line._8, line._12)
+    })
+    .reduceByKey(_+_)
+    .saveAsTextFile("HowSubmitted.txt")
+    
+    textFile
+    .map(line => {
+      var yes = 0
+      var no = 0
+      var na = 0
+      if(line._16 == "Yes") yes = 1
+      else if(line._16 == "No") no = 1
+      else na = 1
+      (line._1, yes, no, na)
+    })
+    .reduceByKey((v1,v2) => {
+      (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
+    })
+    .saveAsTextFile("ProductDispute.txt")
+    
+    textFile
+    .map(line => {
+      var yes = 0
+      var no = 0
+      if(line._15 == "Yes") yes = 1
+      else no = 1
+      (line._8, yes, no)
+    })
+    .reduceByKey((v1,v2) => {
+      (v1._1 + v2._1, v1._2 + v2._2)
+    })
+    .saveAsTextFile("StateTimelyResponse.txt")
   }
 }
 

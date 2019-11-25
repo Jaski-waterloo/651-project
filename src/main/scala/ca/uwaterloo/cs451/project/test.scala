@@ -43,6 +43,7 @@ object test extends Tokenizer {
     var textFile = sc.textFile("customer_data.csv")
     
     textFile
+    .take(5)
     .map(line => {
       var tokens = tokenize(line)
       (tokens,1)

@@ -40,7 +40,7 @@ object test extends Tokenizer {
 //     COLLECTION_NUMBER,COLLECTION_CATEGORY,SENSING_TIME,DATA_TYPE,
 //     WRS_PATH,WRS_ROW,CLOUD_COVER,NORTH_LAT,SOUTH_LAT,
 //     WEST_LON,EAST_LON,TOTAL_SIZE,BASE_URL
-    val textFile = sc.textFile("data2/index.csv.gz")
+    val textFile = sc.textFile("customer_data.csv")
     .take(5)
     .map(line => {
       val tokens = line.split(',')

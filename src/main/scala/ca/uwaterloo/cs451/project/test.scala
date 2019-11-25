@@ -43,12 +43,13 @@ object test extends Tokenizer {
     val textFile = sc.textFile("customer_data.csv")
     
     textFile
-    .map(line => {
+    .take(5)
+    .flatMap(line => {
       val tokens = line.split(',')
       tokens
     })
     .foreach(line => {
-      println(line(1),1)
+      println(line)
     })
 //     .map(line => {
 //       (line(1), 1)

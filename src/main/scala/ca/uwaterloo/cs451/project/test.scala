@@ -68,7 +68,7 @@ object test extends Tokenizer {
       if(line(16) == "Yes") yes = 1
       else if(line(16) == "No") no = 1
       else na = 1
-      (line(8), yes, no, na)
+      (line(8), (yes, no, na))
     })
     .reduceByKey((v1,v2) => {
       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
@@ -90,7 +90,7 @@ object test extends Tokenizer {
       if(line(16) == "Yes") yes = 1
       else if(line(16) == "No") no = 1
       else na = 1
-      (line(1), yes, no, na)
+      (line(1), (yes, no, na))
     })
     .reduceByKey((v1,v2) => {
       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
@@ -103,7 +103,7 @@ object test extends Tokenizer {
       var no = 0
       if(line(15) == "Yes") yes = 1
       else no = 1
-      (line(8), yes, no)
+      (line(8), (yes, no))
     })
     .reduceByKey((v1,v2) => {
       (v1._1 + v2._1, v1._2 + v2._2)

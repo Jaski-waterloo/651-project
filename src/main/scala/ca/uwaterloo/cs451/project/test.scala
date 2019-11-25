@@ -46,10 +46,10 @@ object test extends Tokenizer {
     .take(5)
     .map(line => {
       val tokens = line.split(',')
-      (tokens,1)
+      (tokens(0),tokens(1))
     })
     .foreach(line => {
-      println(line._1)
+      println(line)
     })
 //     .map(line => {
 //       (line(1), 1)

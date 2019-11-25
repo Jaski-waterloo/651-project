@@ -48,14 +48,14 @@ object test extends Tokenizer {
     
     textFile
     .map(line => {
-      (line._1, 1)
+      (line(1), 1)
     })
     .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts.txt")
     
     textFile
     .map(line => {
-      ((line._1,line._7),1)
+      ((line(1),line(7)),1)
     })
     .reduceByKey(_+_)
     .saveAsTextFile("productsOfCompanies.txt")
@@ -65,10 +65,10 @@ object test extends Tokenizer {
       var yes = 0
       var no = 0
       var na = 0
-      if(line._16 == "Yes") yes = 1
-      else if(line._16 == "No") no = 1
+      if(line(16) == "Yes") yes = 1
+      else if(line(16) == "No") no = 1
       else na = 1
-      (line._8, yes, no, na)
+      (line(8), yes, no, na)
     })
     .reduceByKey((v1,v2) => {
       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
@@ -77,7 +77,7 @@ object test extends Tokenizer {
     
     textFile
     .map(line => {
-      (line._8, line._12)
+      (line(8), line(12))
     })
     .reduceByKey(_+_)
     .saveAsTextFile("HowSubmitted.txt")
@@ -87,10 +87,10 @@ object test extends Tokenizer {
       var yes = 0
       var no = 0
       var na = 0
-      if(line._16 == "Yes") yes = 1
-      else if(line._16 == "No") no = 1
+      if(line(16) == "Yes") yes = 1
+      else if(line(16) == "No") no = 1
       else na = 1
-      (line._1, yes, no, na)
+      (line(1), yes, no, na)
     })
     .reduceByKey((v1,v2) => {
       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
@@ -101,9 +101,9 @@ object test extends Tokenizer {
     .map(line => {
       var yes = 0
       var no = 0
-      if(line._15 == "Yes") yes = 1
+      if(line(15) == "Yes") yes = 1
       else no = 1
-      (line._8, yes, no)
+      (line(8), yes, no)
     })
     .reduceByKey((v1,v2) => {
       (v1._1 + v2._1, v1._2 + v2._2)

@@ -49,7 +49,7 @@ object test extends Tokenizer {
       (line, 1)
     })
     .map(pair => {
-      (pair._1._2, 1)
+      (pair._1(1), 1)
     })
     .saveAsTextFile("numberOfProducts")
     

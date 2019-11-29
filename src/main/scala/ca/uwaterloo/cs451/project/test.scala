@@ -46,7 +46,7 @@ object test extends Tokenizer {
     textFile
     .map(line => {
       val tokens = line.split(",").toList
-      (tokens(0), 1)
+      (tokens, tokens.length)
     })
     .saveAsTextFile("numberOfProducts")
     

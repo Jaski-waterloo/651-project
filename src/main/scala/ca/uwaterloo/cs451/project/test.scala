@@ -32,7 +32,7 @@ object test extends Tokenizer {
 
     val conf = new SparkConf().setAppName("test")
     val sc = new SparkContext(conf)
-    FileSystem.get(sc.hadoopConfiguration).delete(numberOfProducts, true)
+    FileSystem.get(sc.hadoopConfiguration).delete("numberOfProducts", true)
 
 //     val outputDir = new Path(args.output())
 //     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)

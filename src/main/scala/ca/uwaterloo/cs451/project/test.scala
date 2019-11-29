@@ -44,7 +44,7 @@ object test extends Tokenizer {
     var textFile = sc.textFile("customer_data")
     
     textFile
-    .map(_.split(","))
+    .map(_.split(",").toList)
     .map(line => {
       (line(1).toString, 1)
     })

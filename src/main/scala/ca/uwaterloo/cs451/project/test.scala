@@ -60,7 +60,7 @@ object test extends Tokenizer {
     .filter(line => {
       line != "discard"
     })
-    .map(line => (line(1), 1))
+    .map(line => (line.toList(1), 1))
     .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts")
     

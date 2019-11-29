@@ -54,8 +54,8 @@ object test extends Tokenizer {
     textFile
     .map(line => {
       val tokens = line.split("\\t").toList
-      if(tokens.length > 2) tokens
-      else "discard"
+      if(tokens.length > 2) (tokens, tokens.length)
+      else ("discard", 1)
     })
     .filter(line => {
       line != "discard"

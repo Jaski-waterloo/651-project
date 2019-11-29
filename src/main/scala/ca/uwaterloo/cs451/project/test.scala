@@ -50,7 +50,7 @@ object test extends Tokenizer {
       else ("discard", 1)
     })
     .filter(line => {
-      if(line._1 != "discard")
+      line._1 != "discard"
     })
     .saveAsTextFile("numberOfProducts")
     

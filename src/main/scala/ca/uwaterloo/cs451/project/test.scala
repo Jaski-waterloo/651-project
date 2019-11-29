@@ -49,10 +49,6 @@ object test extends Tokenizer {
       if(tokens.length > 5) (tokens, tokens.length)
       else List()      
     })
-    .map(line => {
-      (line._1(2), 1)
-    })
-    .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts")
     
 //     textFile

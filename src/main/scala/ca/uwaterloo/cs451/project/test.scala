@@ -46,7 +46,7 @@ object test extends Tokenizer {
     textFile
     .map(_.split(",").toList)
     .map(pair => {
-      yo = pair(0)
+      val yo = pair(0)
       (yo, 1)
     })
     .saveAsTextFile("numberOfProducts")

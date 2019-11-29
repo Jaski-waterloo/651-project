@@ -47,6 +47,10 @@ object test extends Tokenizer {
     .map(line => {
       val tokens = line.split(",").toList
       if(tokens.length > 5) (tokens, tokens.length)
+      else ("discard", 1)
+    })
+    .filter(line => {
+      if(line._1 != "discard")
     })
     .saveAsTextFile("numberOfProducts")
     

@@ -32,6 +32,7 @@ object test extends Tokenizer {
 
     val conf = new SparkConf().setAppName("test")
     val sc = new SparkContext(conf)
+    FileSystem.get(sc.hadoopConfiguration).delete(numberOfProducts, true)
 
 //     val outputDir = new Path(args.output())
 //     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
@@ -43,13 +44,13 @@ object test extends Tokenizer {
     var textFile = sc.textFile("customer_data.csv")
     
     textFile
+    .map(_.split(","))
     .map(line => {
-      var tokens = line.split(',')
-      (tokens(0),1)
+      (line(0),1)
     })
     .take(5)
     .reduceByKey(_+_)
-    .saveAsTextFile("numberOfProducts.txt")
+    .saveAsTextFile("numberOfProducts")
     
 //     textFile
 //     .map(line => {

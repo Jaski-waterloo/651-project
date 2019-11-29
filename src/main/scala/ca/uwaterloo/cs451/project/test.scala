@@ -45,10 +45,6 @@ object test extends Tokenizer {
     
     textFile
     .map(_.split(","))
-    .map(line => {
-      (line(0),1)
-    })
-    .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts")
     
 //     textFile

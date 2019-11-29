@@ -54,6 +54,7 @@ object test extends Tokenizer {
     })
     .map(line => {
       (line._1._2, 1)
+    })
     .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts")
     

@@ -48,26 +48,21 @@ object test extends Tokenizer {
 //     Date sent to company	Company response to consumer	Timely response?	
 //     Consumer disputed?	Complaint ID
 
-    var textFile = sc.textFile("customer_data")
+    var textFile = sc.textFile("ConsumerComplaints.txt")
     
-    val data = textFile.map(line => line.split(",").map(elem => elem.trim)) //lines in rows
-    val header = new SimpleCSVHeader(data.take(1)(0)) // we build our header with the first line
-//     val rows = data.filter(line => header(line,"Product") != "user") // filter the header out
-    val Products = data.map(row => header(row,"Product"))
+    
+    textFile
+    .map(line => {
+      val tokens = line.split(",").toList
+      if(tokens.length > 2) tokens(1)
+      else "discard"
+    })
+    .filter(line => {
+      line != "discard"
+    })
+    .map(line => (line, 1))
+    .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts")
-    
-//     textFile
-//     .flatMap(line => {
-//       val tokens = line.split(",").toList
-//       if(tokens.length > 5) tokens(1)
-//       else "discard"
-//     })
-//     .filter(line => {
-//       line != "discard"
-//     })
-//     .map(line => (line, 1))
-//     .reduceByKey(_+_)
-//     .saveAsTextFile("numberOfProducts")
     
 //     textFile
 //     .map(line => {

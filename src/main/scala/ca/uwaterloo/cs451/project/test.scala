@@ -44,10 +44,9 @@ object test extends Tokenizer {
     var textFile = sc.textFile("customer_data")
     
     textFile
-    .map(_.split(",").toList)
-    .map(pair => {
-      val yo = pair(0)
-      (yo, 1)
+    .map(line => {
+      val tokens = line.split(",").toList
+      (tokens(0), 1)
     })
     .saveAsTextFile("numberOfProducts")
     

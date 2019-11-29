@@ -20,6 +20,11 @@ class testConf(args: Seq[String]) extends ScallopConf(args) with Tokenizer {
   verify()
 }
 
+class SimpleCSVHeader(header:Array[String]) extends Serializable {
+  val index = header.zipWithIndex.toMap
+  def apply(array:Array[String], key:String):String = array(index(key))
+}
+
 object test extends Tokenizer {
   val log = Logger.getLogger(getClass().getName())
 
@@ -37,24 +42,32 @@ object test extends Tokenizer {
 //     val outputDir = new Path(args.output())
 //     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
     
-//     SCENE_ID,PRODUCT_ID,SPACECRAFT_ID,SENSOR_ID,DATE_ACQUIRED,
-//     COLLECTION_NUMBER,COLLECTION_CATEGORY,SENSING_TIME,DATA_TYPE,
-//     WRS_PATH,WRS_ROW,CLOUD_COVER,NORTH_LAT,SOUTH_LAT,
-//     WEST_LON,EAST_LON,TOTAL_SIZE,BASE_URL
+//     Date received	Product	Sub-product	Issue	Sub-issue	
+//     Consumer complaint narrative	Company public response	Company	
+//     State	ZIP code	Tags	Consumer consent provided?	Submitted via	
+//     Date sent to company	Company response to consumer	Timely response?	
+//     Consumer disputed?	Complaint ID
+
     var textFile = sc.textFile("customer_data")
     
-    textFile
-    .flatMap(line => {
-      val tokens = line.split(",").toList
-      if(tokens.length > 5) tokens(1)
-      else "discard"
-    })
-    .filter(line => {
-      line != "discard"
-    })
-    .map(line => (line, 1))
-    .reduceByKey(_+_)
+    val data = textFile.map(line => line.split(",").map(elem => elem.trim)) //lines in rows
+    val header = new SimpleCSVHeader(data.take(1)(0)) // we build our header with the first line
+//     val rows = data.filter(line => header(line,"Product") != "user") // filter the header out
+    val Products = data.map(row => header(row,"Product"))
     .saveAsTextFile("numberOfProducts")
+    
+//     textFile
+//     .flatMap(line => {
+//       val tokens = line.split(",").toList
+//       if(tokens.length > 5) tokens(1)
+//       else "discard"
+//     })
+//     .filter(line => {
+//       line != "discard"
+//     })
+//     .map(line => (line, 1))
+//     .reduceByKey(_+_)
+//     .saveAsTextFile("numberOfProducts")
     
 //     textFile
 //     .map(line => {

@@ -54,13 +54,13 @@ object test extends Tokenizer {
     textFile
     .map(line => {
       val tokens = line.split("\\t").toList
-      if(tokens.length > 17) tokens
-      else "discard"
+      if(tokens.length > 17) (tokens, 1)
+      else ("discard", 1)
     })
     .filter(line => {
-      line != "discard"
+      line._1 != "discard"
     })
-    .map(line => (line.toList(1), 1))
+    .map(line => (line._1._2, 1))
     .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts")
     

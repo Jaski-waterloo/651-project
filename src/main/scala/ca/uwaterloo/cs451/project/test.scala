@@ -48,17 +48,17 @@ object test extends Tokenizer {
 //     Date sent to company	Company response to consumer	Timely response?	
 //     Consumer disputed?	Complaint ID
     
-    val outputDir = new Path("numberOfProducts")
+    var outputDir = new Path("numberOfProducts")
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
-    val outputDir = new Path("productsOfCompanies")
+    outputDir = new Path("productsOfCompanies")
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
-    val outputDir = new Path("StatesConsumerDisputed")
+    outputDir = new Path("StatesConsumerDisputed")
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
-    val outputDir = new Path("ProductDispute")
+    outputDir = new Path("ProductDispute")
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
-    val outputDir = new Path("HowSubmitted")
+    outputDir = new Path("HowSubmitted")
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
-    val outputDir = new Path("StateTimelyResponse")
+    outputDir = new Path("StateTimelyResponse")
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
 
     var textFile = sc.textFile("ConsumerComplaints.txt")
@@ -72,11 +72,13 @@ object test extends Tokenizer {
     .filter(line => {
       line._2 == 18
     })
+    .collect()
     
     csv
     .map(line => (line._1(1), 1))
     .reduceByKey(_+_)
     .sortByKey()
+    .collect()
     .saveAsTextFile("numberOfProducts")
     
     csv
@@ -85,6 +87,7 @@ object test extends Tokenizer {
     })
     .reduceByKey(_+_)
     .sortByKey()
+    .collect()
     .saveAsTextFile("productsOfCompanies")
     
     csv
@@ -101,6 +104,7 @@ object test extends Tokenizer {
       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
     })
     .sortByKey()
+    .collect()
     .saveAsTextFile("StatesConsumerDisputed")
     
     csv
@@ -109,6 +113,7 @@ object test extends Tokenizer {
     })
     .reduceByKey(_+_)
     .sortByKey()
+    .collect()
     .saveAsTextFile("HowSubmitted")
     
     csv
@@ -125,6 +130,7 @@ object test extends Tokenizer {
       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
     })
     .sortByKey()
+    .collect()
     .saveAsTextFile("ProductDispute")
     
     csv
@@ -139,6 +145,7 @@ object test extends Tokenizer {
       (v1._1 + v2._1, v1._2 + v2._2)
     })
     .sortByKey()
+    .collect()
     .saveAsTextFile("StateTimelyResponse")
   }
 }

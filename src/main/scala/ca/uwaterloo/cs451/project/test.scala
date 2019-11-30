@@ -54,101 +54,100 @@ object test extends Tokenizer {
     textFile
     .map(line => {
       val tokens = line.split("\\t").toList
-      if(tokens.length > 17) (tokens(1), 1)
-      else ("discard", 1)
+      (tokens, tokens.length)
     })
     .filter(line => {
-      line._1 != "discard"
+      line._2 > 17
     })
     .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts")
     
-    textFile
-    .map(line => {
-      val tokens = line.split("\\t").toList
-      if(tokens.length > 17) ((tokens(7),tokens(1)),1)
-      else ("discard", 1)
-    })
-    .filter(line => {
-      line._1 != "discard"
-    })
-    .reduceByKey(_+_)
-    .saveAsTextFile("productsOfCompanies")
+//     textFile
+//     .map(line => {
+//       val tokens = line.split("\\t").toList
+//       if(tokens.length > 17) ((tokens(7),tokens(1)),1)
+//       else ("discard", 1)
+//     })
+//     .filter(line => {
+//       line._1 != "discard"
+//     })
+//     .reduceByKey(_+_)
+//     .saveAsTextFile("productsOfCompanies")
     
-    textFile
-    .map(line => {
-      if(tokens.length > 17){
-        val tokens = line.split("\\t").toList
-        var yes = 0
-        var no = 0
-        var na = 0
-        if(tokens(16) == "Yes") yes = 1
-        else if(tokens(16) == "No") no = 1
-        else na = 1
-        (tokens(8), (yes, no, na))
-      }
-      else ("discard", 1)
-    })
-    .filter(line => {
-      line._1 != "discard"
-    })
-    .reduceByKey((v1,v2) => {
-      (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
-    })
-    .saveAsTextFile("StatesConsumerDisputed")
+//     textFile
+//     .map(line => {
+//       val tokens = line.split("\\t").toList
+//       if(tokens.length > 17){
+//         var yes = 0
+//         var no = 0
+//         var na = 0
+//         if(tokens(16) == "Yes") yes = 1
+//         else if(tokens(16) == "No") no = 1
+//         else na = 1
+//         (tokens(8), (yes, no, na))
+//       }
+//       else ("discard", 1)
+//     })
+//     .filter(line => {
+//       line._1 != "discard"
+//     })
+//     .reduceByKey((v1,v2) => {
+//       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
+//     })
+//     .saveAsTextFile("StatesConsumerDisputed")
     
-    textFile
-    .map(line => {
-      val tokens = line.split("\\t")
-      if(tokens.length > 17) ((tokens(8), tokens(11)),1)
-      else ("discard", 1)
-    })
-    .filter(line => {
-      line._1 != "discard"
-    })
-    .reduceByKey(_+_)
-    .saveAsTextFile("HowSubmitted")
+//     textFile
+//     .map(line => {
+//       val tokens = line.split("\\t")
+//       if(tokens.length > 17) ((tokens(8), tokens(11)),1)
+//       else ("discard", 1)
+//     })
+//     .filter(line => {
+//       line._1 != "discard"
+//     })
+//     .reduceByKey(_+_)
+//     .saveAsTextFile("HowSubmitted")
     
-    textFile
-    .map(line => {
-      val tokens = line.split("\\t")
-      if(tokens.length > 17){
-        var yes = 0
-        var no = 0
-        var na = 0
-        if(tokens(16) == "Yes") yes = 1
-        else if(tokens(16) == "No") no = 1
-        else na = 1
-        (tokens(8), (yes, no, na))
-      }
-      else ("discard", 1)
-    })
-    .filter(line => {
-      line._1 != "discard"
-    })
-    .reduceByKey((v1,v2) => {
-      (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
-    })
-    .saveAsTextFile("ProductDispute")
+//     textFile
+//     .map(line => {
+//       val tokens = line.split("\\t")
+//       if(tokens.length > 17){
+//         var yes = 0
+//         var no = 0
+//         var na = 0
+//         if(tokens(16) == "Yes") yes = 1
+//         else if(tokens(16) == "No") no = 1
+//         else na = 1
+//         (tokens(8), (yes, no, na))
+//       }
+//       else ("discard", 1)
+//     })
+//     .filter(line => {
+//       line._1 != "discard"
+//     })
+//     .reduceByKey((v1,v2) => {
+//       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
+//     })
+//     .saveAsTextFile("ProductDispute")
     
-    textFile
-    .map(line => {
-      val tokens = line.split("\\t")
-      if(tokens.length > 17) {
-        var yes = 0
-        var no = 0
-        if(tokens(15) == "Yes") yes = 1
-        else no = 1
-        (tokens(8), (yes, no))
-      }
-      else ("discard", 1)
-    })
-     .filter(line => {
-      line._1 != "discard"
-    })
-    .reduceByKey((v1,v2) => {
-      (v1._1 + v2._1, v1._2 + v2._2)
-    })
-    .saveAsTextFile("StateTimelyResponse")
+//     textFile
+//     .map(line => {
+//       val tokens = line.split("\\t")
+//       if(tokens.length > 17) {
+//         var yes = 0
+//         var no = 0
+//         if(tokens(15) == "Yes") yes = 1
+//         else no = 1
+//         (tokens(8), (yes, no))
+//       }
+//       else ("discard", 1)
+//     })
+//      .filter(line => {
+//       line._1 != "discard"
+//     })
+//     .reduceByKey((v1,v2) => {
+//       (v1._1 + v2._1, v1._2 + v2._2)
+//     })
+//     .saveAsTextFile("StateTimelyResponse")
   }
 }

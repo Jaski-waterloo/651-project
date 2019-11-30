@@ -47,6 +47,19 @@ object test extends Tokenizer {
 //     State	ZIP code	Tags	Consumer consent provided?	Submitted via	
 //     Date sent to company	Company response to consumer	Timely response?	
 //     Consumer disputed?	Complaint ID
+    
+    val outputDir = new Path("numberOfProducts")
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
+    val outputDir = new Path("productsOfCompanies")
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
+    val outputDir = new Path("StatesConsumerDisputed")
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
+    val outputDir = new Path("ProductDispute")
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
+    val outputDir = new Path("HowSubmitted")
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
+    val outputDir = new Path("StateTimelyResponse")
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
 
     var textFile = sc.textFile("ConsumerComplaints.txt")
     

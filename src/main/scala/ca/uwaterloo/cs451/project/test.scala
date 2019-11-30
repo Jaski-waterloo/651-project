@@ -51,7 +51,7 @@ object test extends Tokenizer {
     var textFile = sc.textFile("ConsumerComplaints.txt")
     
     
-    textFile
+    var csv = textFile
     .map(line => {
       val tokens = line.split("\\t").toList
       (tokens, tokens.length)
@@ -59,96 +59,66 @@ object test extends Tokenizer {
     .filter(line => {
       line._2 > 17
     })
+    
+    csv
     .map(line => (line._1(1), 1))
     .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts")
     
-//     textFile
-//     .map(line => {
-//       val tokens = line.split("\\t").toList
-//       if(tokens.length > 17) ((tokens(7),tokens(1)),1)
-//       else ("discard", 1)
-//     })
-//     .filter(line => {
-//       line._1 != "discard"
-//     })
-//     .reduceByKey(_+_)
-//     .saveAsTextFile("productsOfCompanies")
+    csv
+    .map(line => ((line._1(7), line._1(1)),1)
+    .reduceByKey(_+_)
+    .saveAsTextFile("productsOfCompanies")
     
-//     textFile
-//     .map(line => {
-//       val tokens = line.split("\\t").toList
-//       if(tokens.length > 17){
-//         var yes = 0
-//         var no = 0
-//         var na = 0
-//         if(tokens(16) == "Yes") yes = 1
-//         else if(tokens(16) == "No") no = 1
-//         else na = 1
-//         (tokens(8), (yes, no, na))
-//       }
-//       else ("discard", 1)
-//     })
-//     .filter(line => {
-//       line._1 != "discard"
-//     })
-//     .reduceByKey((v1,v2) => {
-//       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
-//     })
-//     .saveAsTextFile("StatesConsumerDisputed")
+    csv
+    .map(line => {
+        var yes = 0
+        var no = 0
+        var na = 0
+        if(line._1(16) == "Yes") yes = 1
+        else if(line._1(16) == "No") no = 1
+        else na = 1
+        (line._1(8), (yes, no, na))
+    })
+    .reduceByKey((v1,v2) => {
+      (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
+    })
+    .saveAsTextFile("StatesConsumerDisputed")
     
-//     textFile
-//     .map(line => {
-//       val tokens = line.split("\\t")
-//       if(tokens.length > 17) ((tokens(8), tokens(11)),1)
-//       else ("discard", 1)
-//     })
-//     .filter(line => {
-//       line._1 != "discard"
-//     })
-//     .reduceByKey(_+_)
-//     .saveAsTextFile("HowSubmitted")
+    csv
+    .map(line => {
+      ((line._1(8), line._1(11)),1)
+    })
+    .reduceByKey(_+_)
+    .saveAsTextFile("HowSubmitted")
     
-//     textFile
-//     .map(line => {
-//       val tokens = line.split("\\t")
-//       if(tokens.length > 17){
-//         var yes = 0
-//         var no = 0
-//         var na = 0
-//         if(tokens(16) == "Yes") yes = 1
-//         else if(tokens(16) == "No") no = 1
-//         else na = 1
-//         (tokens(8), (yes, no, na))
-//       }
-//       else ("discard", 1)
-//     })
-//     .filter(line => {
-//       line._1 != "discard"
-//     })
-//     .reduceByKey((v1,v2) => {
-//       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
-//     })
-//     .saveAsTextFile("ProductDispute")
+    csv
+    .map(line => {
+        var yes = 0
+        var no = 0
+        var na = 0
+        if(line._1(16) == "Yes") yes = 1
+        else if(line._1(16) == "No") no = 1
+        else na = 1
+        (line._1(8), (yes, no, na))
+
+    })
+    .reduceByKey((v1,v2) => {
+      (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
+    })
+    .saveAsTextFile("ProductDispute")
     
-//     textFile
-//     .map(line => {
-//       val tokens = line.split("\\t")
-//       if(tokens.length > 17) {
-//         var yes = 0
-//         var no = 0
-//         if(tokens(15) == "Yes") yes = 1
-//         else no = 1
-//         (tokens(8), (yes, no))
-//       }
-//       else ("discard", 1)
-//     })
-//      .filter(line => {
-//       line._1 != "discard"
-//     })
-//     .reduceByKey((v1,v2) => {
-//       (v1._1 + v2._1, v1._2 + v2._2)
-//     })
-//     .saveAsTextFile("StateTimelyResponse")
+    csv
+    .map(line => {
+        var yes = 0
+        var no = 0
+        if(line._1(15) == "Yes") yes = 1
+        else no = 1
+        (line._1(8), (yes, no))
+    })
+    .reduceByKey((v1,v2) => {
+      (v1._1 + v2._1, v1._2 + v2._2)
+    })
+    .saveAsTextFile("StateTimelyResponse")
   }
 }

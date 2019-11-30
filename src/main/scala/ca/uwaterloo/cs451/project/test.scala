@@ -90,8 +90,8 @@ object test extends Tokenizer {
     .reduceByKey(_+_)
     .sortByKey()
     .map(a => {
-      ((a._1._1, "\\t", a._._2),("\\t", a._2))
-    })
+      ((a._1._1, "\\t", a._1._2),("\\t", a._2))
+    }) 
     .coalesce(1,true)
     .saveAsTextFile("productsOfCompanies")
     

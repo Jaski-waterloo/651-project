@@ -59,7 +59,7 @@ object test extends Tokenizer {
     .filter(line => {
       line._2 > 17
     })
-    .map(line => (line._1._2, 1))
+    .map(line => (line._1(1), 1))
     .reduceByKey(_+_)
     .saveAsTextFile("numberOfProducts")
     

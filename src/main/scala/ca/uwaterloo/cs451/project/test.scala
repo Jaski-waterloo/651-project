@@ -66,7 +66,9 @@ object test extends Tokenizer {
     .saveAsTextFile("numberOfProducts")
     
     csv
-    .map(line => ((line._1(7), line._1(1)),1)
+    .map(line => {
+      ((line._1(7), line._1(1)),1)
+    })
     .reduceByKey(_+_)
     .saveAsTextFile("productsOfCompanies")
     

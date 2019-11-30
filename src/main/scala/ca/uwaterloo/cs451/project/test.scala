@@ -77,7 +77,7 @@ object test extends Tokenizer {
     .map(line => (line._1(1), 1))
     .reduceByKey(_+_)
     .sortByKey()
-    .collect()
+    .coalesce(1,true)
     .saveAsTextFile("numberOfProducts")
     
     csv
@@ -86,7 +86,7 @@ object test extends Tokenizer {
     })
     .reduceByKey(_+_)
     .sortByKey()
-    .collect()
+    .coalesce(1,true)
     .saveAsTextFile("productsOfCompanies")
     
     csv
@@ -103,7 +103,7 @@ object test extends Tokenizer {
       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
     })
     .sortByKey()
-    .collect()
+    .coalesce(1,true)
     .saveAsTextFile("StatesConsumerDisputed")
     
     csv
@@ -112,7 +112,7 @@ object test extends Tokenizer {
     })
     .reduceByKey(_+_)
     .sortByKey()
-    .collect()
+    .coalesce(1,true)
     .saveAsTextFile("HowSubmitted")
     
     csv
@@ -129,7 +129,7 @@ object test extends Tokenizer {
       (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
     })
     .sortByKey()
-    .collect()
+    .coalesce(1,true)
     .saveAsTextFile("ProductDispute")
     
     csv
@@ -144,7 +144,7 @@ object test extends Tokenizer {
       (v1._1 + v2._1, v1._2 + v2._2)
     })
     .sortByKey()
-    .collect()
+    .coalesce(1,true)
     .saveAsTextFile("StateTimelyResponse")
   }
 }

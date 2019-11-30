@@ -57,7 +57,7 @@ object test extends Tokenizer {
       (tokens, tokens.length)
     })
     .filter(line => {
-      line._2 > 17
+      line._2 == 18
     })
     
     csv

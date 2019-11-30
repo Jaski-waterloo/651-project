@@ -72,7 +72,6 @@ object test extends Tokenizer {
     .filter(line => {
       line._2 == 18
     })
-    .collect()
     
     csv
     .map(line => (line._1(1), 1))

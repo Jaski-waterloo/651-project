@@ -114,7 +114,7 @@ object test extends Tokenizer {
     
     csv
     .map(line => {
-      ((line._1(8), line._1(11)),1)
+      ((line._1(8), line._1(12)),1)
     })
     .reduceByKey(_+_)
     .sortByKey()

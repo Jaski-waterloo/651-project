@@ -120,11 +120,11 @@ object test extends Tokenizer {
         var post = 0
         var ref = 0
         var web = 0
-        if(line._1(16) == "Email") email = 1
-        else if(line._1(16) == "Fax") fax = 1
-        else if(line._1(16) == "Phone") phone = 1
-        else if(line._1(16) == "Postal mail") post = 1
-        else if(line._1(16) == "Referral") ref = 1
+        if(line._1(12) == "Email") email = 1
+        else if(line._1(12) == "Fax") fax = 1
+        else if(line._1(12) == "Phone") phone = 1
+        else if(line._1(12) == "Postal mail") post = 1
+        else if(line._1(12) == "Referral") ref = 1
         else web = 1
       (line._1(8), (email, fax, phone, post, ref, web))
     })

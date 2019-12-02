@@ -114,9 +114,23 @@ object test extends Tokenizer {
     
     csv
     .map(line => {
-      ((line._1(8), line._1(12)),1)
+        var email = 0
+        var fax = 0
+        var phone = 0
+        var post = 0
+        var ref = 0
+        var web = 0
+        if(line._1(16) == "Email") email = 1
+        else if(line._1(16) == "Fax") fax = 1
+        else if(line._1(16) == "Phone") phone = 1
+        else if(line._1(16) == "Postal mail") post = 1
+        else if(line._1(16) == "Referral") ref = 1
+        else web = 1
+      (line._1(8), (email, fax, phone, post, ref))
     })
-    .reduceByKey(_+_)
+    .reduceByKey((v1,v2) => {
+      (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3, v1._4 + v2._4, v1._5 + v2._5, v1._6 + v2._6)
+    })
     .sortByKey()
     .coalesce(1,true)
     .saveAsTextFile("HowSubmitted")

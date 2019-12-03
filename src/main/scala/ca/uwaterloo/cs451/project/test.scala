@@ -169,8 +169,7 @@ object test extends Tokenizer {
     
     csv
     .map(line => {
-      var year = 2015
-      year = line._1(0).substring(6,10)
+      var year = line._1(0).substring(6,10)
       var prod = line._1(1)
       var yes = 0
       var no = 0
@@ -178,7 +177,7 @@ object test extends Tokenizer {
       if(line._1(16) == "Yes") yes = 1
       else if(line._1(16) == "No") no = 1
       else na = 1
-      ((prod, year),(yes, no, na))
+      ((prod + "$" + year),(yes, no, na))
     })
       .reduceByKey((v1, v2) => {
         (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)

@@ -166,5 +166,22 @@ object test extends Tokenizer {
     .sortByKey()
     .coalesce(1,true)
     .saveAsTextFile("StateTimelyResponse")
+    
+    csv
+    .map(line => {
+      var year = 2015
+      year = line._1(0).substring(6,9)
+      prod = line._1(1)
+      var yes = 0
+      var no = 0
+      if(line._1(16) == "Yes") yes = 1
+      else no = 1
+      ((prod, year),(yes, no))
+      .reduceByKey((v1, v2) => {
+        (v1._1 + v2._1, v1._2 + v2._2)
+      })
+      .sortByKey()
+      .coalesce(1,true)
+      .saveAsTextFile("YearlyDispute")
   }
 }

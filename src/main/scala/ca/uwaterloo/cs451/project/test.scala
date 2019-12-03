@@ -60,6 +60,11 @@ object test extends Tokenizer {
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
     outputDir = new Path("StateTimelyResponse")
     FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
+    outputDir = new Path("YearlyDispute")
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
+    outputDir = new Path("HowTimelyResponse")
+    FileSystem.get(sc.hadoopConfiguration).delete(outputDir, true)
+
 
     var textFile = sc.textFile("ConsumerComplaints.txt")
     
@@ -185,5 +190,20 @@ object test extends Tokenizer {
       .sortByKey()
       .coalesce(1,true)
       .saveAsTextFile("YearlyDispute")
+    
+    csv.
+    .map(line => {
+        var yes = 0
+        var no = 0
+        if(line._1(15) == "Yes") yes = 1
+        else no = 1
+        (line._1(12), (yes, no))
+    })
+    .reduceByKey((v1,v2) => {
+      (v1._1 + v2._1, v1._2 + v2._2)
+    })
+    .sortByKey()
+    .coalesce(1,true)
+    .saveAsTextFile("HowTimelyResponse")
   }
 }

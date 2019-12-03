@@ -191,7 +191,7 @@ object test extends Tokenizer {
       .coalesce(1,true)
       .saveAsTextFile("YearlyDispute")
     
-    csv.
+    csv
     .map(line => {
         var yes = 0
         var no = 0

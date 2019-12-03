@@ -174,11 +174,14 @@ object test extends Tokenizer {
       prod = line._1(1)
       var yes = 0
       var no = 0
+      var na = 0
       if(line._1(16) == "Yes") yes = 1
-      else no = 1
-      ((prod, year),(yes, no))
+      else if(line._1(16) == "No") no = 1
+      else na = 1
+      ((prod, year),(yes, no, na))
+    })
       .reduceByKey((v1, v2) => {
-        (v1._1 + v2._1, v1._2 + v2._2)
+        (v1._1 + v2._1, v1._2 + v2._2, v1._3 + v2._3)
       })
       .sortByKey()
       .coalesce(1,true)

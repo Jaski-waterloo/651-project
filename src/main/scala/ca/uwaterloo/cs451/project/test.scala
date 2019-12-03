@@ -170,7 +170,7 @@ object test extends Tokenizer {
     csv
     .map(line => {
       var year = 2015
-      year = line._1(0).toString.substring(6)
+      year = line._1(0).substring(6,10)
       var prod = line._1(1)
       var yes = 0
       var no = 0

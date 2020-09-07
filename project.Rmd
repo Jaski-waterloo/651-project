@@ -1,0 +1,1012 @@
+---
+title: '651'
+author: "Jaskirat Singh Bhatia"
+date: "30/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+V1 <- as.vector(read.csv("NumberOfProducts.csv", header = FALSE)$V1)
+V2 <- as.vector(read.csv("NumberOfProducts.csv", header = FALSE)$V2)
+#V3 <- as.vector(read.csv("NumberOfProducts.csv", header = FALSE)$V3)
+v = substring(as.vector(V1)[1],4)
+V1[1] = v
+NumberOfProducts <- data.frame(Product = V1, Number = V2)
+
+
+V1 <- as.vector(read.csv("ProductDispute.csv", header = FALSE)$V1)
+V2 <- as.vector(read.csv("ProductDispute.csv", header = FALSE)$V2)
+V3 <- as.vector(read.csv("ProductDispute.csv", header = FALSE)$V3)
+V4 <- as.vector(read.csv("ProductDispute.csv", header = FALSE)$V4)
+v = substring(as.vector(V1)[1],4)
+V1[1] = v
+ProductDispute <- data.frame(Product = V1, yes = V2, no = V3, na = V4)
+
+
+
+V1 <- as.vector(read.csv("HowSubmitted.csv", header = FALSE)$V1)
+email <- as.vector(read.csv("HowSubmitted.csv", header = FALSE)$V2)
+fax <- as.vector(read.csv("HowSubmitted.csv", header = FALSE)$V3)
+phone <- as.vector(read.csv("HowSubmitted.csv", header = FALSE)$V4)
+post <- as.vector(read.csv("HowSubmitted.csv", header = FALSE)$V5)
+ref <- as.vector(read.csv("HowSubmitted.csv", header = FALSE)$V6)
+web <- as.vector(read.csv("HowSubmitted.csv", header = FALSE)$V7)
+v = substring(as.vector(V1)[1],4)
+V1[1] = v
+HowSubmitted <- data.frame(State = V1, email=email, fax=fax, phone=phone, post=post, ref=ref, web=web)
+
+
+V1 <- as.vector(read.csv("ProductOfCompanies.csv", header = FALSE)$V1)
+V2 <- as.vector(read.csv("ProductOfCompanies.csv", header = FALSE)$V2)
+V3 <- as.vector(read.csv("ProductOfCompanies.csv", header = FALSE)$V3)
+v = substring(as.vector(V1)[1],4)
+V1[1] = v
+ProductOfCompanies <- data.frame(company = V1, product = V2, count = V3)
+
+
+V1 <- as.vector(read.csv("StatesConsumerDisputed.csv", header = FALSE)$V1)
+V2 <- as.vector(read.csv("StatesConsumerDisputed.csv", header = FALSE)$V2)
+V3 <- as.vector(read.csv("StatesConsumerDisputed.csv", header = FALSE)$V3)
+V4 <- as.vector(read.csv("StatesConsumerDisputed.csv", header = FALSE)$V4)
+v = substring(as.vector(V1)[1],4)
+V1[1] = v
+StatesConsumerDisputed <- data.frame(State = V1, yes = V2, no = V3, na = V4)
+
+V1 <- as.vector(read.csv("HowConsumerDisputed.csv", header = FALSE)$V1)
+V2 <- as.vector(read.csv("HowConsumerDisputed.csv", header = FALSE)$V2)
+V3 <- as.vector(read.csv("HowConsumerDisputed.csv", header = FALSE)$V3)
+V4 <- as.vector(read.csv("HowConsumerDisputed.csv", header = FALSE)$V4)
+v = substring(as.vector(V1)[1],4)
+V1[1] = v
+HowConsumerDisputed <- data.frame(State = V1, yes = V2, no = V3, na = V4)
+
+
+V1 <- as.vector(read.csv("StateTimelyResponse.csv", header = FALSE)$V1)
+V2 <- as.vector(read.csv("StateTimelyResponse.csv", header = FALSE)$V2)
+V3 <- as.vector(read.csv("StateTimelyResponse.csv", header = FALSE)$V3)
+v = substring(as.vector(V1)[1],4)
+V1[1] = v
+StateTimelyResponse <- data.frame(state = V1, yes = V2, no = V3)
+
+V1 <- as.vector(read.csv("HowTimelyResponse.csv", header = FALSE)$V1)
+V2 <- as.vector(read.csv("HowTimelyResponse.csv", header = FALSE)$V2)
+V3 <- as.vector(read.csv("HowTimelyResponse.csv", header = FALSE)$V3)
+v = substring(as.vector(V1)[1],4)
+V1[1] = v
+HowTimelyResponse <- data.frame(state = V1, yes = V2, no = V3)
+
+
+V1 <- as.vector(read.csv("YearlyDispute.csv", header = FALSE)$V1)
+V2 <- as.vector(read.csv("YearlyDispute.csv", header = FALSE)$V2)
+V3 <- as.vector(read.csv("YearlyDispute.csv", header = FALSE)$V3)
+V4 <- as.vector(read.csv("YearlyDispute.csv", header = FALSE)$V4)
+V5 <- as.vector(read.csv("YearlyDispute.csv", header = FALSE)$V5)
+v = substring(as.vector(V1)[1],4)
+V1[1] = v
+YearlyDispute <- data.frame(Product = V1, Year = V2, yes = V3, no = V4, na = V5)
+
+
+```
+
+
+```{r}
+
+NumberOfProducts
+ProductDispute
+HowSubmitted
+ProductOfCompanies
+StatesConsumerDisputed
+StateTimelyResponse
+YearlyDispute
+HowConsumerDisputed
+HowTimelyResponse
+
+```
+
+
+
+```{r}
+
+
+# Load ggplot2
+library(ggplot2)
+library(gridExtra)
+
+p <- list()
+q <- list()
+r <- list()
+s <- list()
+
+P <- list()
+Q <- list()
+R <- list()
+S <- list()
+
+
+a <- 0
+b <- 0
+c <- 0
+d <- 0
+
+
+for (y in 1:nrow(StateTimelyResponse)) {
+  yes = as.vector(StateTimelyResponse$yes[y])[1]
+  no = as.vector(StateTimelyResponse$no[y])[1]
+  state = as.vector(StateTimelyResponse$state[y])[1]
+  w = yes + no
+  df <- data.frame(
+  group = c("Yes", "No"),
+  value = c(yes, no)
+  )
+  
+  if(w < 100)
+  {
+    w = w/100
+    a = a + 1
+    p[[a]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) + 
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3"))
+    
+    P[a] = state
+  }
+  else if(w < 1000)
+  {
+    b = b + 1
+    w = w / 1000
+    q[[b]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3"))
+    
+    Q[b] = state
+  }
+  else if(w < 10000)
+  {
+    c = c + 1
+    w = w/10000
+    r[[c]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3"))
+    
+    R[c] = state
+  }
+  else
+  {
+    d = d + 1
+    w = w/100000
+    s[[d]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3"))
+    
+    S[d] = state
+  }
+  
+}
+
+
+for (i in 1:a) {
+    file_name = paste("StateTimelyResponse\\", P[i],"G1", ".png", sep="")
+    if(P[i] == "") file_name = paste("StateTimelyResponse\\", "Empty","G1", ".png", sep="")
+    png(file_name)
+    print(p[[i]])
+    dev.off()
+}
+
+for (i in 1:b) {
+    file_name = paste("StateTimelyResponse\\", Q[i],"G2", ".png", sep="")
+    if(Q[i] == "") file_name = paste("StateTimelyResponse\\", "Empty","G2", ".png", sep="")
+    png(file_name)
+    print(q[[i]])
+    dev.off()
+}
+
+for (i in 1:c) {
+    file_name = paste("StateTimelyResponse\\", R[i],"G3", ".png", sep="")
+    if(R[i] == "") file_name = paste("StateTimelyResponse\\", "Empty","G3", ".png", sep="")
+    png(file_name)
+    print(r[[i]])
+    dev.off()
+}
+
+for (i in 1:d) {
+    file_name = paste("StateTimelyResponse\\", S[i],"G4", ".png", sep="")
+    if(S[i] == "" || S[i] == " ") file_name = paste("StateTimelyResponse", "\\Empty","G4", ".png", sep="")
+    png(file_name)
+    print(s[[i]])
+    dev.off()
+}
+
+
+#do.call(grid.arrange,p)
+#as.vector(NumberOfProducts$Product[1])[1]
+
+```
+
+```{r ,eval=FALSE, echo=FALSE}
+
+
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  library(grid)
+
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+
+  numPlots = length(plots)
+
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                    ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+
+ if (numPlots==1) {
+    print(plots[[1]])
+
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+
+plots = list()
+plots[1] = multiplot(plotlist = p, cols = 3)
+plots[2] = multiplot(plotlist = q, cols = 3)
+plots[3] = multiplot(plotlist = r, cols = 3)
+plots[4] = multiplot(plotlist = s, cols = 3)
+
+for (i in 1:4) {
+    file_name = paste("StateTimelyResponse", i, ".tiff", sep="")
+    tiff(file_name)
+    print(plots[[i]])
+    dev.off()
+}
+
+
+
+```
+
+```{r}
+
+
+df <- NumberOfProducts
+p <- ggplot(data=df, aes(x=Product, y=Number)) +
+  geom_bar(stat="identity", fill="steelblue") +
+  ggtitle("Number of Products under Each Complaint")
+
+p + coord_flip()
+
+
+```
+
+```{r}
+
+
+library(ggplot2)
+library(gridExtra)
+
+p <- list()
+q <- list()
+r <- list()
+s <- list()
+
+P <- list()
+Q <- list()
+R <- list()
+S <- list()
+
+a <- 0
+b <- 0
+c <- 0
+d <- 0
+
+
+for (y in 1:nrow(ProductDispute)) {
+  yes = as.vector(ProductDispute$yes[y])[1]
+  no = as.vector(ProductDispute$no[y])[1]
+  na = as.vector(ProductDispute$na[y])[1]
+  state = as.vector(ProductDispute$Product[y])[1]
+  w = yes + no + na
+  df <- data.frame(
+  group = c("Yes", "No", "Na"),
+  value = c(yes, no, na)
+  )
+  
+  if(w < 100)
+  {
+    w = w/100
+    a = a + 1
+    p[[a]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3", "Na" = "firebrick3"))
+    
+    P[a] = state
+  }
+  else if(w < 1000)
+  {
+    b = b + 1
+    w = w / 1000
+    q[[b]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) + 
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3", "Na" = "firebrick3"))
+    
+    Q[b] = state
+  }
+  else if(w < 10000)
+  {
+    c = c + 1
+    w = w/10000
+    r[[c]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3", "Na" = "firebrick3"))
+    
+    R[c] = state
+  }
+  else
+  {
+    d = d + 1
+    w = w/100000
+    s[[d]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3", "Na" = "firebrick3"))
+    
+    S[d] = state
+  }
+  
+}
+
+
+for (i in 1:a) {
+    file_name = paste("G1", P[i], ".png", sep="")
+    png(file_name)
+    print(p[[i]])
+    dev.off()
+}
+
+for (i in 1:b) {
+    file_name = paste("G2", Q[i], ".png", sep="")
+    png(file_name)
+    print(q[[i]])
+    dev.off()
+}
+
+for (i in 1:c) {
+    file_name = paste("G3", R[i], ".png", sep="")
+    png(file_name)
+    print(r[[i]])
+    dev.off()
+}
+
+for (i in 1:d) {
+    file_name = paste("G4", S[i], ".png", sep="")
+    png(file_name)
+    print(s[[i]])
+    dev.off()
+}
+
+
+```
+
+
+```{r}
+
+library(ggplot2)
+library(gridExtra)
+
+p <- list()
+q <- list()
+r <- list()
+s <- list()
+
+P <- list()
+Q <- list()
+R <- list()
+S <- list()
+
+a <- 0
+b <- 0
+c <- 0
+d <- 0
+
+
+for (y in 1:nrow(StatesConsumerDisputed)) {
+  yes = as.vector(StatesConsumerDisputed$yes[y])[1]
+  no = as.vector(StatesConsumerDisputed$no[y])[1]
+  na = as.vector(StatesConsumerDisputed$na[y])[1]
+  state = as.vector(StatesConsumerDisputed$State[y])[1]
+  w = yes + no + na
+  df <- data.frame(
+  group = c("Yes", "No", "Na"),
+  value = c(yes, no, na)
+  )
+  
+  if(w < 100)
+  {
+    w = w/100
+    a = a + 1
+    p[[a]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "firebrick3", "No" = "forestgreen", "Na" = "gold3"))
+    
+    P[a] = state
+  }
+  else if(w < 1000)
+  {
+    b = b + 1
+    w = w / 1000
+    q[[b]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) + 
+      scale_fill_manual("legend", values = c("Yes" = "firebrick3", "No" = "forestgreen", "Na" = "gold3"))
+    
+    Q[b] = state
+  }
+  else if(w < 10000)
+  {
+    c = c + 1
+    w = w/10000
+    r[[c]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "firebrick3", "No" = "forestgreen", "Na" = "gold3"))
+    
+    R[c] = state
+  }
+  else
+  {
+    d = d + 1
+    w = w/100000
+    s[[d]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "firebrick3", "No" = "forestgreen", "Na" = "gold3"))
+    
+    S[d] = state
+  }
+  
+}
+
+
+for (i in 1:a) {
+    file_name = paste("StatesConsumerDisputed\\", P[i],"G1", ".png", sep="")
+    if(P[i] == "") file_name = paste("StatesConsumerDisputed\\", "Empty","G1", ".png", sep="")
+    png(file_name)
+    print(p[[i]])
+    dev.off()
+}
+
+for (i in 1:b) {
+    file_name = paste("StatesConsumerDisputed\\", Q[i],"G2", ".png", sep="")
+    if(Q[i] == "") file_name = paste("StatesConsumerDisputed\\", "Empty","G2", ".png", sep="")
+    png(file_name)
+    print(q[[i]])
+    dev.off()
+}
+
+for (i in 1:c) {
+    file_name = paste("StatesConsumerDisputed\\", R[i],"G3", ".png", sep="")
+    if(R[i] == "") file_name = paste("StatesConsumerDisputed\\", "Empty","G3", ".png", sep="")
+    png(file_name)
+    print(r[[i]])
+    dev.off()
+}
+
+for (i in 1:d) {
+    file_name = paste("StatesConsumerDisputed\\", S[i],"G4", ".png", sep="")
+    if(S[i] == '' || S[i] == ' ') {file_name = paste("StatesConsumerDisputed\\", "Empty","G4", ".png", sep="")}
+    png(file_name)
+    print(s[[i]])
+    dev.off()
+}
+
+
+```
+
+
+```{r}
+
+library(ggplot2)
+library(gridExtra)
+
+p <- list()
+q <- list()
+r <- list()
+s <- list()
+
+P <- list()
+Q <- list()
+R <- list()
+S <- list()
+
+a <- 0
+b <- 0
+c <- 0
+d <- 0
+
+
+for (y in 1:nrow(HowSubmitted)) {
+  email = as.vector(HowSubmitted$email[y])[1]
+  fax = as.vector(HowSubmitted$fax[y])[1]
+  phone = as.vector(HowSubmitted$phone[y])[1]
+  web = as.vector(HowSubmitted$web[y])[1]
+  post = as.vector(HowSubmitted$post[y])[1]
+  ref = as.vector(HowSubmitted$ref[y])[1]
+  state = as.vector(HowSubmitted$State[y])[1]
+  w = email + fax + phone + web + post + ref
+  df <- data.frame(
+  group = c("email", "phone", "web", 'fax', 'post', "ref"),
+  value = c(email, phone, web, fax, post, ref)
+  )
+  
+  if(w < 100)
+  {
+    w = w/100
+    a = a + 1
+    p[[a]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("email"="azure4", "phone"="coral", "web"="cyan3", 'fax'="gray4",     'post'='darkorchid', "ref"='firebrick3'))
+    
+    P[a] = state
+  }
+  else if(w < 1000)
+  {
+    b = b + 1
+    w = w / 1000
+    q[[b]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("email"="azure4", "phone"="coral", "web"="cyan3", 'fax'="gray4",     'post'='darkorchid', "ref"='firebrick3'))
+    
+     Q[b] = state
+  }
+  else if(w < 10000)
+  {
+    c = c + 1
+    w = w/10000
+    r[[c]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("email"="azure4", "phone"="coral", "web"="cyan3", 'fax'="gray4",     'post'='darkorchid', "ref"='firebrick3'))
+    
+     R[c] = state
+  }
+  else
+  {
+    d = d + 1
+    w = w/100000
+    s[[d]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("email" ="azure4", "phone"="coral", "web"="cyan3", 'fax'="gray4",     'post'='darkorchid', "ref"='firebrick3'))
+    
+     S[d] = state
+  }
+  
+}
+
+
+for (i in 1:a) {
+    file_name = paste("HowSubmitted\\",P[i],"G1", ".png", sep="")
+    if(P[i] == "") file_name = paste("HowSubmitted\\","Empty","G1", ".png", sep="")
+    png(file_name)
+    print(p[[i]])
+    dev.off()
+}
+
+for (i in 1:b) {
+    file_name = paste("HowSubmitted\\",Q[i],"G2", ".png", sep="")
+    if(Q[i] == "") file_name = paste("HowSubmitted\\","Empty","G2", ".png", sep="")
+    png(file_name)
+    print(q[[i]])
+    dev.off()
+}
+
+for (i in 1:c) {
+    file_name = paste("HowSubmitted\\",R[i],"G3", ".png", sep="")
+    if(R[i] == "") file_name = paste("HowSubmitted\\","Empty","G3", ".png", sep="")
+    png(file_name)
+    print(r[[i]])
+    dev.off()
+}
+
+for (i in 1:d) {
+    file_name = paste("HowSubmitted\\",S[i],"G4", ".png", sep="")
+    if(S[i] == "") file_name = paste("HowSubmitted\\","Empty","G4", ".png", sep="")
+    png(file_name)
+    print(s[[i]])
+    dev.off()
+}
+
+
+```
+
+
+
+```{r}
+
+
+library(ggplot2)
+library(gridExtra)
+
+p <- list()
+q <- list()
+r <- list()
+s <- list()
+
+P <- list()
+Q <- list()
+R <- list()
+S <- list()
+
+a <- 0
+b <- 0
+c <- 0
+d <- 0
+
+
+for (y in 1:nrow(YearlyDispute)) {
+  state = as.vector(YearlyDispute$Product[y])[1]
+  year = as.vector(YearlyDispute$Year[y])[1]
+  yes = as.vector(YearlyDispute$yes[y])[1]
+  no = as.vector(YearlyDispute$no[y])[1]
+  na = as.vector(YearlyDispute$na[y])[1]
+  w = yes + no + na
+  df <- data.frame(
+  group = c("Yes", "No", "Na"),
+  value = c(yes, no, na)
+  )
+  
+  if(w < 100)
+  {
+    w = w/100
+    a = a + 1
+    p[[a]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(paste(state, year)) +
+      scale_fill_manual("legend", values = c("Yes" = "darkgreen", "No" = "gold3", "Na" = "firebrick3"))
+    
+    P[a] = paste(state, year)
+  }
+  else if(w < 1000)
+  {
+    b = b + 1
+    w = w / 1000
+    q[[b]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(paste(state, year)) +
+      scale_fill_manual("legend", values = c("Yes" = "darkgreen", "No" = "gold3", "Na" = "firebrick3"))
+    
+    Q[b] = paste(state, year)
+  }
+  else if(w < 10000)
+  {
+    c = c + 1
+    w = w/10000
+    r[[c]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(paste(state, year)) +
+      scale_fill_manual("legend", values = c("Yes" = "darkgreen", "No" = "gold3", "Na" = "firebrick3"))
+    
+    R[c] = paste(state, year)
+  }
+  else
+  {
+    d = d + 1
+    w = w/100000
+    s[[d]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(paste(state, year)) +
+      scale_fill_manual("legend", values = c("Yes" = "darkgreen", "No" = "gold3", "Na" = "firebrick3"))
+    
+    S[d] = paste(state, year)
+  }
+  
+}
+
+
+for (i in 1:a) {
+    file_name = paste(P[i],"G1", ".png", sep="")
+    png(file_name)
+    print(p[[i]])
+    dev.off()
+}
+
+for (i in 1:b) {
+    file_name = paste(Q[i],"G2", ".png", sep="")
+    png(file_name)
+    print(q[[i]])
+    dev.off()
+}
+
+for (i in 1:c) {
+    file_name = paste(R[i],"G3", ".png", sep="")
+    png(file_name)
+    print(r[[i]])
+    dev.off()
+}
+
+for (i in 1:d) {
+    file_name = paste(S[i],"G4", ".png", sep="")
+    png(file_name)
+    print(s[[i]])
+    dev.off()
+}
+
+```
+
+```{r}
+
+library(ggplot2)
+library(gridExtra)
+
+p <- list()
+q <- list()
+r <- list()
+s <- list()
+
+P <- list()
+Q <- list()
+R <- list()
+S <- list()
+
+
+a <- 0
+b <- 0
+c <- 0
+d <- 0
+
+
+for (y in 1:nrow(HowTimelyResponse)) {
+  yes = as.vector(HowTimelyResponse$yes[y])[1]
+  no = as.vector(HowTimelyResponse$no[y])[1]
+  state = as.vector(HowTimelyResponse$state[y])[1]
+  w = yes + no
+  df <- data.frame(
+  group = c("Yes", "No"),
+  value = c(yes, no)
+  )
+  
+  if(w < 100)
+  {
+    w = w/100
+    a = a + 1
+    p[[a]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) + 
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3"))
+    
+    P[a] = state
+  }
+  else if(w < 1000)
+  {
+    b = b + 1
+    w = w / 1000
+    q[[b]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3"))
+    
+    Q[b] = state
+  }
+  else if(w < 10000)
+  {
+    c = c + 1
+    w = w/10000
+    r[[c]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3"))
+    
+    R[c] = state
+  }
+  else
+  {
+    d = d + 1
+    w = w/100000
+    s[[d]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "forestgreen", "No" = "gold3"))
+    
+    S[d] = state
+  }
+  
+}
+
+
+for (i in 1:a) {
+    file_name = paste("HowTimelyResponse\\", P[i],"G1", ".png", sep="")
+    if(P[i] == "") file_name = paste("HowTimelyResponse\\", "Empty","G1", ".png", sep="")
+    png(file_name)
+    print(p[[i]])
+    dev.off()
+}
+
+for (i in 1:b) {
+    file_name = paste("HowTimelyResponse\\", Q[i],"G2", ".png", sep="")
+    if(Q[i] == "") file_name = paste("HowTimelyResponse\\", "Empty","G2", ".png", sep="")
+    png(file_name)
+    print(q[[i]])
+    dev.off()
+}
+
+for (i in 1:c) {
+    file_name = paste("HowTimelyResponse\\", R[i],"G3", ".png", sep="")
+    if(R[i] == "") file_name = paste("HowTimelyResponse\\", "Empty","G3", ".png", sep="")
+    png(file_name)
+    print(r[[i]])
+    dev.off()
+}
+
+for (i in 1:d) {
+    file_name = paste("HowTimelyResponse\\", S[i],"G4", ".png", sep="")
+    if(S[i] == "" || S[i] == " ") file_name = paste("HowTimelyResponse", "\\Empty","G4", ".png", sep="")
+    png(file_name)
+    print(s[[i]])
+    dev.off()
+}
+
+```
+
+
+
+```{r}
+
+library(ggplot2)
+library(gridExtra)
+
+p <- list()
+q <- list()
+r <- list()
+s <- list()
+
+P <- list()
+Q <- list()
+R <- list()
+S <- list()
+
+a <- 0
+b <- 0
+c <- 0
+d <- 0
+
+
+for (y in 1:nrow(HowConsumerDisputed)) {
+  yes = as.vector(HowConsumerDisputed$yes[y])[1]
+  no = as.vector(HowConsumerDisputed$no[y])[1]
+  na = as.vector(HowConsumerDisputed$na[y])[1]
+  state = as.vector(HowConsumerDisputed$State[y])[1]
+  w = yes + no + na
+  df <- data.frame(
+  group = c("Yes", "No", "Na"),
+  value = c(yes, no, na)
+  )
+  
+  if(w < 100)
+  {
+    w = w/100
+    a = a + 1
+    p[[a]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "firebrick3", "No" = "forestgreen", "Na" = "gold3"))
+    
+    P[a] = state
+  }
+  else if(w < 1000)
+  {
+    b = b + 1
+    w = w / 1000
+    q[[b]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) + 
+      scale_fill_manual("legend", values = c("Yes" = "firebrick3", "No" = "forestgreen", "Na" = "gold3"))
+    
+    Q[b] = state
+  }
+  else if(w < 10000)
+  {
+    c = c + 1
+    w = w/10000
+    r[[c]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "firebrick3", "No" = "forestgreen", "Na" = "gold3"))
+    
+    R[c] = state
+  }
+  else
+  {
+    d = d + 1
+    w = w/100000
+    s[[d]] = ggplot(df, aes(x="", y=value, fill=group)) +
+      geom_bar(width = w, stat = "identity") +
+      ggtitle(state) +
+      scale_fill_manual("legend", values = c("Yes" = "firebrick3", "No" = "forestgreen", "Na" = "gold3"))
+    
+    S[d] = state
+  }
+  
+}
+
+
+for (i in 1:a) {
+    file_name = paste("HowConsumerDisputed\\", P[i],"G1", ".png", sep="")
+    if(P[i] == "") file_name = paste("HowConsumerDisputed\\", "Empty","G1", ".png", sep="")
+    png(file_name)
+    print(p[[i]])
+    dev.off()
+}
+
+for (i in 1:b) {
+    file_name = paste("HowConsumerDisputed\\", Q[i],"G2", ".png", sep="")
+    if(Q[i] == "") file_name = paste("HowConsumerDisputed\\", "Empty","G2", ".png", sep="")
+    png(file_name)
+    print(q[[i]])
+    dev.off()
+}
+
+for (i in 1:c) {
+    file_name = paste("HowConsumerDisputed\\", R[i],"G3", ".png", sep="")
+    if(R[i] == "") file_name = paste("HowConsumerDisputed\\", "Empty","G3", ".png", sep="")
+    png(file_name)
+    print(r[[i]])
+    dev.off()
+}
+
+for (i in 1:d) {
+    file_name = paste("HowConsumerDisputed\\", S[i],"G4", ".png", sep="")
+    if(S[i] == '' || S[i] == ' ') {file_name = paste("HowConsumerDisputed\\", "Empty","G4", ".png", sep="")}
+    png(file_name)
+    print(s[[i]])
+    dev.off()
+}
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
